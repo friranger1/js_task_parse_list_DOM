@@ -6,19 +6,23 @@ const list = document.getElementsByTagName('ul')[0];
 getEmployees(salaryElems);
 sortList(salaryElems, 'salary', list);
 
+function parseSalary(salaryStr) {
+  const cleaned = salaryStr.replace(/[^\d.,]/g, '');
+  const normalized = cleaned.replace(/,/g, '');
+  return parseFloat(normalized);
+}
+
 function sortList(array, attribute, listElement) {
   const sortedArray = array.sort((elem, elem2) => {
-    const num = parseFloat(elem.dataset[attribute].replace(/[^\d.,]/g, '').replace(',', ''));
-    const num2 = parseFloat(elem2.dataset[attribute].replace(/[^\d.,]/g, '').replace(',', ''));
+    const num = parseSalary(elem.dataset[attribute]);
+    const num2 = parseSalary(elem2.dataset[attribute]);
     return num2 - num;
   });
 
   sortedArray.forEach((li) => {
     listElement.appendChild(li);
   });
-}
-
-
+};
 function getEmployees(l) {
   const array = l.map((element) => {
     return {
